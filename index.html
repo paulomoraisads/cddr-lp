@@ -8,6 +8,14 @@
   <meta property="og:title" content="Código das Duas Rodas — Leandro Sampaio">
   <meta property="og:description" content="Você aprendeu a andar de moto. Mas ninguém te ensinou a pilotar de verdade.">
 
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '969317068370656');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=969317068370656&ev=PageView&noscript=1"/></noscript>
+  <!-- End Meta Pixel -->
+
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -576,6 +584,38 @@
       document.addEventListener('click', (e) => {
         const a = e.target.closest && e.target.closest('a[href*="hotmart.com"]');
         if (a) applyUtms();
+      }, true);
+    })();
+
+    // Meta Pixel + CAPI (mesmo event_id no navegador e no servidor = deduplicação)
+    (function () {
+      const genId = () => 'e-' + Date.now() + '-' + Math.random().toString(16).slice(2, 10);
+      const getCookie = (n) => { const m = document.cookie.match('(^|;)\\s*' + n + '\\s*=\\s*([^;]+)'); return m ? m.pop() : ''; };
+      function track(eventName, custom) {
+        const eventId = genId();
+        if (window.fbq) fbq('track', eventName, custom || {}, { eventID: eventId });
+        try {
+          fetch('/capi', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            keepalive: true,
+            body: JSON.stringify({
+              event_name: eventName,
+              event_id: eventId,
+              event_source_url: location.href,
+              custom_data: custom || {},
+              fbp: getCookie('_fbp'),
+              fbc: getCookie('_fbc')
+            })
+          }).catch(() => {});
+        } catch (e) {}
+      }
+      track('PageView');
+      document.addEventListener('click', (e) => {
+        const a = e.target.closest && e.target.closest('a');
+        if (!a || !a.href) return;
+        if (a.href.indexOf('hotmart.com') > -1) track('InitiateCheckout', { content_name: 'Código das Duas Rodas', value: 47.00, currency: 'BRL' });
+        else if (a.href.indexOf('wa.me') > -1) track('Lead', { content_name: 'WhatsApp - CDDR' });
       }, true);
     })();
 
