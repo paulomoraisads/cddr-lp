@@ -548,17 +548,33 @@
       });
     });
 
-    // Encaminha UTMs e parâmetros de rastreio da LP -> checkout (Hotmart)
+    // Encaminha UTMs e rastreio da LP -> checkout (Hotmart). Mapeia tbm o 'src' nativo do Hotmart.
     (function () {
       const params = new URLSearchParams(window.location.search);
       const keep = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','xcod','fbclid','gclid'];
       const pass = [];
-      keep.forEach(k => { const v = params.get(k); if (v) pass.push(encodeURIComponent(k) + '=' + encodeURIComponent(v)); });
+      keep.forEach(k => { const v = params.get(k); if (v) pass.push([k, v]); });
+      // Hotmart usa 'src' como fonte nativa: se não veio, deriva de utm_campaign/utm_source
+      if (!params.get('src')) {
+        const s = params.get('utm_campaign') || params.get('utm_source');
+        if (s) pass.push(['src', s.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 50)]);
+      }
       if (!pass.length) return;
-      const qs = pass.join('&');
-      document.querySelectorAll('a[href*="hotmart.com"], a[href*="pay.hotmart"]').forEach(a => {
-        a.href += (a.href.indexOf('?') > -1 ? '&' : '?') + qs;
-      });
+      const applyUtms = () => {
+        document.querySelectorAll('a[href*="hotmart.com"]').forEach(a => {
+          try {
+            const u = new URL(a.href);
+            pass.forEach(([k, v]) => { if (!u.searchParams.has(k)) u.searchParams.set(k, v); });
+            a.href = u.toString();
+          } catch (e) {}
+        });
+      };
+      applyUtms();
+      // Reaplica no clique (garante, mesmo se o link mudar)
+      document.addEventListener('click', (e) => {
+        const a = e.target.closest && e.target.closest('a[href*="hotmart.com"]');
+        if (a) applyUtms();
+      }, true);
     })();
 
   </script>
