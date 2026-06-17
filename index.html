@@ -548,16 +548,18 @@
       });
     });
 
-    // Encaminha UTMs e rastreio da LP -> checkout (Hotmart). Mapeia tbm o 'src' nativo do Hotmart.
+    // Encaminha UTMs da LP -> checkout (Hotmart) + monta o 'sck' (origem de checkout).
     (function () {
       const params = new URLSearchParams(window.location.search);
-      const keep = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','xcod','fbclid','gclid'];
+      const keep = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','sck','src','xcod','fbclid','gclid'];
       const pass = [];
       keep.forEach(k => { const v = params.get(k); if (v) pass.push([k, v]); });
-      // Hotmart usa 'src' como fonte nativa: se não veio, deriva de utm_campaign/utm_source
-      if (!params.get('src')) {
-        const s = params.get('utm_campaign') || params.get('utm_source');
-        if (s) pass.push(['src', s.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 50)]);
+      // 'sck' = concatenação das UTMs. É o parâmetro que a Hotmart lê pro relatório
+      // "Vendas por origem de checkout". Sem ele, a origem não aparece nas vendas.
+      if (!params.get('sck')) {
+        const order = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+        const parts = order.map(k => params.get(k)).filter(Boolean);
+        if (parts.length) pass.push(['sck', parts.join('|')]);
       }
       if (!pass.length) return;
       const applyUtms = () => {
