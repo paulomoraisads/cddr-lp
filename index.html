@@ -35,8 +35,8 @@
 
       --text-strong: #ffffff;
       --text-on-dark: rgba(255, 255, 255, 0.92);
-      --text-muted: rgba(255, 255, 255, 0.62);
-      --text-soft: rgba(255, 255, 255, 0.45);
+      --text-muted: rgba(255, 255, 255, 0.72);
+      --text-soft: rgba(255, 255, 255, 0.6);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1006,6 +1006,7 @@
     <span><strong>+5.000</strong> motociclistas pilotando melhor</span>
   </div>
 
+  <main>
   <!-- HERO — Lâmina 1 -->
   <section class="hero" id="topo">
     <div class="container">
@@ -1259,20 +1260,20 @@
       </button>
       <div class="social-marquee" id="socialMarquee">
       <div class="social-track" id="socialTrack">
-        <div class="comment-card"><img src="assets/comentarios/13.webp" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/4.webp" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/2.webp" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/6.webp" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/1.webp" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/7.webp" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/3.webp" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/8.webp" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/14.webp" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/9.webp" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/5.webp" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/10.webp" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/11.webp" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/12.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/13.webp" alt="Comentário de aluno" loading="lazy" width="480" height="557"></div>
+        <div class="comment-card"><img src="assets/comentarios/4.webp" alt="Comentário de aluno" loading="lazy" width="480" height="484"></div>
+        <div class="comment-card"><img src="assets/comentarios/2.webp" alt="Comentário de aluno" loading="lazy" width="480" height="479"></div>
+        <div class="comment-card"><img src="assets/comentarios/6.webp" alt="Comentário de aluno" loading="lazy" width="480" height="401"></div>
+        <div class="comment-card"><img src="assets/comentarios/1.webp" alt="Comentário de aluno" loading="lazy" width="480" height="583"></div>
+        <div class="comment-card"><img src="assets/comentarios/7.webp" alt="Comentário de aluno" loading="lazy" width="480" height="484"></div>
+        <div class="comment-card"><img src="assets/comentarios/3.webp" alt="Comentário de aluno" loading="lazy" width="480" height="519"></div>
+        <div class="comment-card"><img src="assets/comentarios/8.webp" alt="Comentário de aluno" loading="lazy" width="480" height="441"></div>
+        <div class="comment-card"><img src="assets/comentarios/14.webp" alt="Comentário de aluno" loading="lazy" width="480" height="419"></div>
+        <div class="comment-card"><img src="assets/comentarios/9.webp" alt="Comentário de aluno" loading="lazy" width="480" height="545"></div>
+        <div class="comment-card"><img src="assets/comentarios/5.webp" alt="Comentário de aluno" loading="lazy" width="480" height="584"></div>
+        <div class="comment-card"><img src="assets/comentarios/10.webp" alt="Comentário de aluno" loading="lazy" width="480" height="556"></div>
+        <div class="comment-card"><img src="assets/comentarios/11.webp" alt="Comentário de aluno" loading="lazy" width="480" height="475"></div>
+        <div class="comment-card"><img src="assets/comentarios/12.webp" alt="Comentário de aluno" loading="lazy" width="480" height="420"></div>
       </div>
       </div>
     </div>
@@ -1397,6 +1398,7 @@
       </a>
     </div>
   </section>
+  </main>
 
   <!-- FOOTER -->
   <footer>
@@ -1413,55 +1415,64 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    // Carrossel de comentários: auto-scroll + setas + loop infinito
+    // Carrossel de comentários: inicializa só quando chega perto da tela (poupa CPU no load)
     const socialTrack = document.getElementById('socialTrack');
     const socialMarquee = document.getElementById('socialMarquee');
     if (socialTrack && socialMarquee) {
-      socialTrack.innerHTML += socialTrack.innerHTML; // duplica pro loop
+      let started = false;
+      let visible = false;
 
-      let paused = false;
-      let resumeTimer = null;
-      const pauseTemp = (ms = 1800) => {
-        paused = true;
-        clearTimeout(resumeTimer);
-        resumeTimer = setTimeout(() => { paused = false; }, ms);
-      };
+      const initCarousel = () => {
+        socialTrack.innerHTML += socialTrack.innerHTML; // duplica pro loop
 
-      const wrap = () => {
-        const half = socialTrack.scrollWidth / 2;
-        if (socialMarquee.scrollLeft >= half) socialMarquee.scrollLeft -= half;
-        else if (socialMarquee.scrollLeft < 0) socialMarquee.scrollLeft += half;
-      };
+        let paused = false;
+        let resumeTimer = null;
+        const pauseTemp = (ms = 1800) => {
+          paused = true;
+          clearTimeout(resumeTimer);
+          resumeTimer = setTimeout(() => { paused = false; }, ms);
+        };
 
-      function step() {
-        if (!paused) socialMarquee.scrollLeft += 0.6;
-        wrap();
+        const wrap = () => {
+          const half = socialTrack.scrollWidth / 2;
+          if (socialMarquee.scrollLeft >= half) socialMarquee.scrollLeft -= half;
+          else if (socialMarquee.scrollLeft < 0) socialMarquee.scrollLeft += half;
+        };
+
+        function step() {
+          if (!paused && visible) socialMarquee.scrollLeft += 0.6; // só anima quando visível
+          wrap();
+          requestAnimationFrame(step);
+        }
         requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
 
-      // Pausa quando o mouse/dedo está sobre o carrossel
-      socialMarquee.addEventListener('pointerenter', () => { paused = true; });
-      socialMarquee.addEventListener('pointerleave', () => { paused = false; });
-      socialMarquee.addEventListener('pointerdown', () => pauseTemp(2500));
+        socialMarquee.addEventListener('pointerenter', () => { paused = true; });
+        socialMarquee.addEventListener('pointerleave', () => { paused = false; });
+        socialMarquee.addEventListener('pointerdown', () => pauseTemp(2500));
 
-      const cardStep = () => {
-        const card = socialTrack.querySelector('.comment-card');
-        const w = card ? card.offsetWidth + 18 : 280;
-        return w * 2; // pula ~2 cards por clique
+        const cardStep = () => {
+          const card = socialTrack.querySelector('.comment-card');
+          const w = card ? card.offsetWidth + 18 : 280;
+          return w * 2;
+        };
+        const half = () => socialTrack.scrollWidth / 2;
+
+        document.getElementById('socialNext').addEventListener('click', () => {
+          pauseTemp();
+          socialMarquee.scrollBy({ left: cardStep(), behavior: 'smooth' });
+        });
+        document.getElementById('socialPrev').addEventListener('click', () => {
+          pauseTemp();
+          if (socialMarquee.scrollLeft < cardStep()) socialMarquee.scrollLeft += half();
+          socialMarquee.scrollBy({ left: -cardStep(), behavior: 'smooth' });
+        });
       };
-      const half = () => socialTrack.scrollWidth / 2;
 
-      document.getElementById('socialNext').addEventListener('click', () => {
-        pauseTemp();
-        socialMarquee.scrollBy({ left: cardStep(), behavior: 'smooth' });
-      });
-      document.getElementById('socialPrev').addEventListener('click', () => {
-        pauseTemp();
-        // se estiver no começo, salta meio (conteúdo idêntico) pra rolar pra trás sem travar
-        if (socialMarquee.scrollLeft < cardStep()) socialMarquee.scrollLeft += half();
-        socialMarquee.scrollBy({ left: -cardStep(), behavior: 'smooth' });
-      });
+      const cio = new IntersectionObserver((entries) => {
+        visible = entries[0].isIntersecting;
+        if (visible && !started) { started = true; initCarousel(); }
+      }, { rootMargin: '300px' });
+      cio.observe(socialMarquee);
     }
 
     // Depoimento: preview mudo em loop -> clique reinicia com som
