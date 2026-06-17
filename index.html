@@ -8,9 +8,11 @@
   <meta property="og:title" content="Código das Duas Rodas — Leandro Sampaio">
   <meta property="og:description" content="Você aprendeu a andar de moto. Mas ninguém te ensinou a pilotar de verdade.">
 
+  <link rel="preload" as="image" href="assets/logo_cddr.webp" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap"></noscript>
 
   <style>
     /* ═══════════════════════════════════════════════
@@ -1008,7 +1010,7 @@
   <section class="hero" id="topo">
     <div class="container">
       <div class="hero-logo">
-        <img src="assets/logo_cddr.png" alt="Código das Duas Rodas — Leandro Sampaio">
+        <img src="assets/logo_cddr.webp" alt="Código das Duas Rodas — Leandro Sampaio" width="720" height="405" fetchpriority="high">
       </div>
       <div class="hero-badge">
         <span class="pulse"></span>
@@ -1174,7 +1176,7 @@
 
       <div class="testimonial-tag reveal"><span class="dot"></span> Depoimento — Lucas Souza</div>
       <div class="testimonial-media reveal" id="depoVideo">
-        <video src="assets/depoimento-lucas.mp4" muted loop autoplay playsinline preload="auto"></video>
+        <video src="assets/depoimento-lucas.mp4" muted loop playsinline preload="none" poster="assets/depoimento-poster.webp"></video>
         <button class="video-play-overlay" aria-label="Tocar com som">
           <span class="play-circle">
             <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -1257,20 +1259,20 @@
       </button>
       <div class="social-marquee" id="socialMarquee">
       <div class="social-track" id="socialTrack">
-        <div class="comment-card"><img src="assets/comentarios/13.png" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/4.png" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/2.png" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/6.png" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/1.png" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/7.png" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/3.png" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/8.png" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/14.png" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/9.png" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/5.png" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/10.png" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/11.png" alt="Comentário de aluno" loading="lazy"></div>
-        <div class="comment-card"><img src="assets/comentarios/12.png" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/13.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/4.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/2.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/6.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/1.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/7.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/3.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/8.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/14.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/9.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/5.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/10.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/11.webp" alt="Comentário de aluno" loading="lazy"></div>
+        <div class="comment-card"><img src="assets/comentarios/12.webp" alt="Comentário de aluno" loading="lazy"></div>
       </div>
       </div>
     </div>
@@ -1281,7 +1283,7 @@
   <section class="section instructor-section" id="instrutor">
     <div class="container">
       <div class="instructor-inner">
-        <div class="instructor-photo reveal"><img src="assets/leandro_foto.jpg" alt="Leandro Sampaio na moto"></div>
+        <div class="instructor-photo reveal"><img src="assets/leandro_foto.webp" alt="Leandro Sampaio na moto" width="760" height="1013" loading="lazy"></div>
         <div class="instructor-body reveal reveal--d1">
           <p class="kicker">Quem vai te ensinar</p>
           <h2>Leandro Sampaio</h2>
@@ -1399,7 +1401,7 @@
   <!-- FOOTER -->
   <footer>
     <div class="container">
-      <img class="footer-logo" src="assets/logo_cddr.png" alt="Código das Duas Rodas">
+      <img class="footer-logo" src="assets/logo_cddr.webp" alt="Código das Duas Rodas" width="720" height="405" loading="lazy">
       <p>© 2026 Leandro Sampaio · Código das Duas Rodas. Todos os direitos reservados.<br>De motociclista pra motociclista — direto, sem enrolação.</p>
     </div>
   </footer>
@@ -1467,6 +1469,18 @@
     if (depo) {
       const vid = depo.querySelector('video');
       const overlay = depo.querySelector('.video-play-overlay');
+
+      // Carrega/inicia o preview mudo só quando o vídeo entra na tela (economiza dados no carregamento)
+      const vio = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting && vid.paused && !vid.dataset.started) {
+            vid.muted = true;
+            vid.play().catch(() => {});
+            vid.dataset.started = '1';
+          }
+        });
+      }, { threshold: 0.25 });
+      vio.observe(depo);
       overlay.addEventListener('click', () => {
         vid.currentTime = 0;
         vid.muted = false;
