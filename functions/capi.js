@@ -14,22 +14,29 @@ export async function onRequestPost(context) {
       return json({ error: 'META_CAPI_TOKEN não configurado' }, 200);
     }
 
-    const ip = request.headers.get('CF-Connecting-IP') || '';
-    const ua = request.headers.get('User-Agent') || '';
+    const user_data = {};
 
-    const user_data = {
-      client_ip_address: ip,
-      client_user_agent: ua
-    };
+    // Eventos do navegador: anexa IP/UA reais do visitante.
+    // Eventos manuais/server (body.manual=true): NÃO usa IP/UA do servidor
+    // (seria o IP do Cloudflare, não o do comprador) — usa só advanced matching.
+    if (!body.manual) {
+      user_data.client_ip_address = request.headers.get('CF-Connecting-IP') || '';
+      user_data.client_user_agent = request.headers.get('User-Agent') || '';
+    }
     if (body.fbp) user_data.fbp = body.fbp;
     if (body.fbc) user_data.fbc = body.fbc;
 
+    // Advanced matching (já hasheado SHA-256 pelo emissor): em, ph, fn, ln
+    for (const k of ['em', 'ph', 'fn', 'ln']) {
+      if (body[k]) user_data[k] = Array.isArray(body[k]) ? body[k] : [body[k]];
+    }
+
     const event = {
       event_name: body.event_name,
-      event_time: Math.floor(Date.now() / 1000),
+      event_time: body.event_time || Math.floor(Date.now() / 1000),
       event_id: body.event_id,
       event_source_url: body.event_source_url,
-      action_source: 'website',
+      action_source: body.action_source || 'website',
       user_data,
       custom_data: body.custom_data || {}
     };
