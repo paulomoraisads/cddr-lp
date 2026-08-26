@@ -1,0 +1,23 @@
+# Cache — Cloudflare Pages
+#
+# ATENCAO: regras que se sobrepoem sao CONCATENADAS pelo Cloudflare
+# (viram "max-age=X, max-age=Y" = header invalido). Por isso aqui ha
+# UMA regra unica pra /assets/* — nao adicionar regras de subpasta.
+
+# HTML sempre revalida: preco, textos e datas mudam.
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Todos os estaticos (imagens, video, prints) — 1 ano.
+#
+# >>> Ao TROCAR qualquer arquivo em /assets, RENOMEAR (ex: leandro_foto-v2.webp)
+# >>> e atualizar o src no index.html. Sobrescrever com o mesmo nome deixa
+# >>> quem ja visitou vendo a versao antiga por ate 1 ano.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/favicon.ico
+  Cache-Control: public, max-age=2592000
