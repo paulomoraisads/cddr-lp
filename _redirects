@@ -1,0 +1,4 @@
+# /branco foi renomeada pra /2.0 logo depois de publicada.
+# Redirect por garantia, caso o link antigo tenha ido pra algum lugar.
+/branco/* /2.0/:splat 301
+/branco /2.0 301
