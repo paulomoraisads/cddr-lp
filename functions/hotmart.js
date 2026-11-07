@@ -17,7 +17,8 @@ export async function onRequestPost(context) {
 
     // --- Valida o Hottok (header X-HOTMART-HOTTOK ou no corpo) ---
     const hottok = request.headers.get('X-HOTMART-HOTTOK') || body.hottok || '';
-    if (env.HOTMART_HOTTOK && hottok !== env.HOTMART_HOTTOK) {
+    // Segurança (07/11/2026): sem o secret configurado, recusa tudo (antes aceitava qualquer POST).
+    if (!env.HOTMART_HOTTOK || hottok !== env.HOTMART_HOTTOK) {
       return json({ ok: false, error: 'hottok inválido' }, 401);
     }
 
@@ -27,6 +28,14 @@ export async function onRequestPost(context) {
     // Só dispara Purchase em "Compra aprovada" (evita duplicar com outros eventos).
     if (event !== 'PURCHASE_APPROVED') {
       return json({ ok: true, ignored: event || 'sem evento' }, 200);
+    }
+
+    // Cartão (pagamento imediato) quem manda é a integração nativa da Hotmart,
+    // configurada em "Apenas pagamentos imediatos". Aqui só Pix e boleto, senão
+    // a venda de cartão contaria duas vezes.
+    const paymentType = String((((body.data || {}).purchase || {}).payment || {}).type || '').toUpperCase();
+    if (!/PIX|BILLET/.test(paymentType)) {
+      return json({ ok: true, ignored: 'pagamento imediato: ' + (paymentType || 'sem tipo') }, 200);
     }
 
     const buyer = data.buyer || {};

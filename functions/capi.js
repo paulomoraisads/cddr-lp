@@ -5,6 +5,11 @@
 const PIXEL_ID = '969317068370656';
 const API_VERSION = 'v21.0';
 
+// Segurança (07/11/2026): só passam os eventos que as páginas usam (+ os do modelo do agente de site).
+// Antes, qualquer pessoa podia mandar qualquer evento, inclusive Purchase falso.
+const PERMITIDOS = ['PageView', 'ViewContent', 'InitiateCheckout', 'Lead', 'Contact', 'CompleteRegistration',
+  'Purchase', 'Rolagem25', 'Rolagem50', 'Rolagem75', 'Rolagem90'];
+
 export async function onRequestPost(context) {
   const { request, env } = context;
   try {
@@ -12,6 +17,15 @@ export async function onRequestPost(context) {
     const token = env.META_CAPI_TOKEN;
     if (!token) {
       return json({ error: 'META_CAPI_TOKEN não configurado' }, 200);
+    }
+    if (!PERMITIDOS.includes(body.event_name)) {
+      return json({ error: 'evento não permitido' }, 400);
+    }
+    // Purchase do navegador não existe (a compra vem da Hotmart). Purchase/evento manual
+    // (recuperar venda perdida) só com a chave CAPI_MANUAL_KEY (secret no Cloudflare).
+    if ((body.manual || body.event_name === 'Purchase') &&
+        (!env.CAPI_MANUAL_KEY || body.key !== env.CAPI_MANUAL_KEY)) {
+      return json({ error: 'evento manual sem chave' }, 401);
     }
 
     const user_data = {};
